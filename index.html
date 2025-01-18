@@ -61,7 +61,7 @@
 
     <div class="container">
         <section>
-            <h2>Connect nginx server</h2>
+            <h2>Configure nginx server</h2>
             <p>Use the following command to connect to your server</p>
             <code>ssh root@server_ip</code>
         </section>
@@ -123,6 +123,9 @@ server {
 ln -s /etc/nginx/sites-available/backend /etc/nginx/sites-enabled/<br>
 nginx -t<br>
 systemctl reload nginx
+
+sudo systemctl restart nginx
+
             </code>
         </section>
 
@@ -203,6 +206,9 @@ sudo chown -R www-data:www-data /var/www/web-upload/dist/image-upload/browser
             <h2>Bonus Steps</h2>
             <p>To remove packages:</p>
             <code>rm -rf node_modules package-lock.json</code>
+            <code>rm -rf /var/www/portal</code>
+            <p>If Permission Issues Arise</p>
+            <code>sudo rm -rf /var/www/portal</code>
             <p>Create a directory if not exists:</p>
             <code>
 sudo mkdir -p /etc/nginx/sites-available<br>
@@ -350,8 +356,7 @@ nano .github/workflows/deploy.yml
 <p>Add the following content</p>
 
 <code>
-    name: Deploy HTML to Nginx
-
+name: Deploy HTML to Nginx
 on:
   push:
     branches:
