@@ -18,35 +18,62 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy to staging directory
+    - name: Deploy to server
       run: |
         rsync -avz --delete \
         -e "ssh -o StrictHostKeyChecking=no" \
-        ./ root@${{ secrets.SERVER_IP }}:/var/www/staging/
+        ./ root@${{ secrets.SERVER_IP }}:/var/www/web/
 
-    - name: Swap directories
-      run: |
-        ssh root@${{ secrets.SERVER_IP }} << EOF
-          mv /var/www/web /var/www/backup_$(date +%Y%m%d%H%M%S)
-          mv /var/www/staging /var/www/web
-        EOF
 
-    - name: Reload Nginx
-      run: |
-        ssh root@${{ secrets.SERVER_IP }} << EOF
-          nginx -t && systemctl reload nginx
-        EOF
+# name: Deploy HTML to Nginx
 
-    - name: Perform health check
-      run: |
-        ssh root@${{ secrets.SERVER_IP }} << EOF
-          curl -Is http://localhost | head -n 1
-        EOF
+# on:
+#   push:
+#     branches:
+#       - master
 
-    - name: Rollback on failure
-      if: failure()
-      run: |
-        ssh root@${{ secrets.SERVER_IP }} << EOF
-          mv /var/www/web /var/www/failed_$(date +%Y%m%d%H%M%S)
-          mv /var/www/backup_* /var/www/web
-        EOF
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Set up SSH
+#       uses: webfactory/ssh-agent@v0.5.4
+#       with:
+#         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#     - name: Deploy to staging directory
+#       run: |
+#         rsync -avz --delete \
+#         -e "ssh -o StrictHostKeyChecking=no" \
+#         ./ root@${{ secrets.SERVER_IP }}:/var/www/staging/
+
+#     - name: Swap directories
+#       run: |
+#         ssh root@${{ secrets.SERVER_IP }} << EOF
+#           mv /var/www/web /var/www/backup_$(date +%Y%m%d%H%M%S)
+#           mv /var/www/staging /var/www/web
+#         EOF
+
+#     - name: Reload Nginx
+#       run: |
+#         ssh root@${{ secrets.SERVER_IP }} << EOF
+#           nginx -t && systemctl reload nginx
+#         EOF
+
+#     - name: Perform health check
+#       run: |
+#         ssh root@${{ secrets.SERVER_IP }} << EOF
+#           curl -Is http://localhost | head -n 1
+#         EOF
+
+#     - name: Rollback on failure
+#       if: failure()
+#       run: |
+#         ssh root@${{ secrets.SERVER_IP }} << EOF
+#           mv /var/www/web /var/www/failed_$(date +%Y%m%d%H%M%S)
+#           mv /var/www/backup_* /var/www/web
+#         EOF
