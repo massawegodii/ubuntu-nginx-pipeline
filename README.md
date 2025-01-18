@@ -1,0 +1,1 @@
+Ubuntu Nginx using CI/CD pipeline using github workflow that detect changes in the server when push or pull in local machine
