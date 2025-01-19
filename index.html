@@ -42,7 +42,7 @@
             overflow-x: auto;
             white-space: pre-wrap;
         }
-        h2 {
+        h4 {
             color: #333;
         }
         a {
@@ -56,25 +56,25 @@
 </head>
 <body>
     <header>
-        <h1>Nginx Configuration Guide</h1>
+        <h4>Nginx Configuration Guide</h4>
     </header>
 
     <div class="container">
         <section>
-            <h2>Configure Nginx server</h2>
+            <h4>Configure Nginx server</h4>
             <p>Use the following command to connect to your server</p>
             <code>ssh root@server_ip</code>
         </section>
 
         <section>
-            <h2>Install NGINX</h2>
+            <h4>Install NGINX</h4>
             <p>Run the command below to install NGINX:</p>
             <code>apt-get install nginx</code>
             <code>sudo apt-get install nginx</code>
         </section>
 
         <section>
-            <h2>Clone your github  Repository</h2>
+            <h4>Clone your github  Repository</h4>
             <p>Navigate to project directory and clone the repository:</p>
             <code>
 cd /var/www<br>
@@ -90,7 +90,7 @@ API="http://12.345.45.678/api";<br>
         </section>
 
         <section>
-            <h2>Configure NGINX for Your Subdomain</h2>
+            <h4>Configure NGINX for Your Subdomain</h4>
             <p>Create an NGINX configuration file:</p>
             <code>
 nano /etc/nginx/sites-available/backend
@@ -130,7 +130,7 @@ sudo systemctl restart nginx
         </section>
 
         <section>
-            <h2>Secure the Subdomain with Let's Encrypt</h2>
+            <h4>Secure the Subdomain with Let's Encrypt</h4>
             <p>Install Certbot and obtain an SSL certificate:</p>
             <code>
 sudo apt update<br>
@@ -142,7 +142,7 @@ certbot --nginx -d api.www.kiganjaniafyacheck.com
         </section>
 
         <section>
-            <h2>Install and Configure PM2</h2>
+            <h4>Install and Configure PM2</h4>
             <p>Install PM2 globally:</p>
             <code>npm install -g pm2</code>
             <p>Start your app and save the process:</p>
@@ -156,7 +156,7 @@ pm2 startup
         </section>
 
         <section>
-            <h2>Angular Application Configuration</h2>
+            <h4>Angular Application Configuration</h4>
             <p>Clone your Angular project and build it:</p>
             <code>
 ssh root@&lt;your-server-ip&gt;<br>
@@ -203,7 +203,7 @@ sudo chown -R www-data:www-data /var/www/web-upload/dist/image-upload/browser
         </section>
 
         <section>
-            <h2>Bonus Steps</h2>
+            <h4>Bonus Steps</h4>
             <p>To remove packages:</p>
             <code>rm -rf node_modules package-lock.json</code>
             <code>rm -rf /var/www/portal</code>
@@ -220,7 +220,7 @@ sudo nano /etc/nginx/sites-available/backend
         </section>
 
         <section>
-            <h2>Architect.build.configurations.production section under your project</h2>
+            <h4>Configurations section under your project</h4>
             <p>In package.json</p>
             <code>
         "configurations": {
@@ -248,7 +248,7 @@ sudo nano /etc/nginx/sites-available/backend
 
 
         <section>
-            <h2>Set Up the Ubuntu Server in Single Page</h2>
+            <h4>Set Up the Ubuntu Server in Single Page</h4>
             <p>Install Required Software</p>
             <code>
 sudo apt update && sudo apt upgrade -y <br>
@@ -306,7 +306,7 @@ sudo systemctl reload nginx
         </section>
 
         <section>
-            <h2>Enable HTTPS with Let's Encrypt</h2>
+            <h4>Enable HTTPS with Let's Encrypt</h4>
             <p>Install Certbot</p>
             <code>
 sudo apt install certbot python3-certbot-nginx -y 
@@ -343,7 +343,7 @@ sudo systemctl reload nginx
         </section>
 
         <section>
-            <h2>CI/CD GitHub Workflow pipeline</h2>
+            <h4>CI/CD GitHub Workflow pipeline</h4>
             <p>Set Up the Workflow File in local machine </p>
             <code>
 mkdir -p .github/workflows
@@ -386,7 +386,7 @@ jobs:
         </section>
 
         <section>
-    <h2>Set up a GitHub Actions workflow in Node.js application on an Ubuntu server using Nginx</h2>
+    <h4>Set up a GitHub Actions workflow in Node.js</h4>
     <p>Install Required Software </p>
     <code>ssh username@your-server-ip</code>
     <p>Update the system</p>
@@ -425,9 +425,9 @@ jobs:
     <code>sudo systemctl reload nginx</code>
 
     <h4>Prepare the GitHub Repository</h4>
-    <p>Ensure your repository is private</p>
-    <p>Add a .github/workflows/deploy.yml file to the repository</p>
-    <p>Generate SSH Keys on your local machine<p>
+       * Ensure your repository is private
+       * Add a .github/workflows/deploy.yml file to the repository
+       * Generate SSH Keys on your local machine
     <code>ssh-keygen -t rsa -b 4096 -C "your-email@example.com" </code>
     <p>Then copy public key to the server </p>
 
@@ -442,7 +442,7 @@ jobs:
 
     <p>
         
-     <h2>Create the GitHub Actions Workflow</h2>
+     <h4>Create the GitHub Actions Workflow</h4>
      <p>Create a .github/workflows/deploy.yml file in your repository with the following content</p>
      <code>
         name: Deploy to Server
@@ -518,9 +518,8 @@ jobs:
 
      <p>Your workflow is now complete and will automatically deploy updates to your Node.js application whenever you push changes to GitHub!</p>
 
-
         <section>
-            <h2>Final Steps</h2>
+            <h4>Final Steps</h4>
             <p>Access your applications</p>
             <ul>
                 <li>Backend API: <a href="https://api.www.kiganjaniafyacheck.com">https://api.www.kiganjaniafyacheck.com</a></li>
