@@ -386,7 +386,7 @@ jobs:
         </section>
 
         <section>
-    <h2>set up a GitHub Actions workflow to automatically deploy your Node.js application on an Ubuntu server using Nginx</h2>
+    <h2>Set up a GitHub Actions workflow in Node.js application on an Ubuntu server using Nginx</h2>
     <p>Install Required Software </p>
     <code>ssh username@your-server-ip</code>
     <p>Update the system</p>
@@ -498,15 +498,14 @@ jobs:
         </code>
         
 
-    <h2>Additional Configuration<h2>
+    <h4>Additional Configuration</h4>
      <p>SSL Setup: Use Let's Encrypt to secure your app with HTTPS</p>
      <code>
         sudo apt install certbot python3-certbot-nginx
         sudo certbot --nginx -d your-domain.com
      </code>
 
-     <section>
-     <h2>NOTE: </h2>
+     <h4>NOTE: </h4>
      <p>Add a Build Script If your project requires a build step (e.g., TypeScript, Webpack, etc.), add a build script to your package.json</p>
      <code>
         "scripts": {
@@ -516,7 +515,6 @@ jobs:
      </code>
      <p>Then ensure all necessary dependencies (like typescript) are installed</p>
      <code>npm install typescript --save-dev </code>
-    </section>
 
      <p>Your workflow is now complete and will automatically deploy updates to your Node.js application whenever you push changes to GitHub!</p>
 
