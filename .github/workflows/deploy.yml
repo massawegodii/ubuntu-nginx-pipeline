@@ -25,6 +25,7 @@ jobs:
         ./ root@${{ secrets.SERVER_IP }}:/var/www/web/
 
 
+ # Adding Backup and staging    
 
 # name: Deploy HTML to Nginx (Debugging)
 

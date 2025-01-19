@@ -385,6 +385,142 @@ jobs:
         </section>
 
         <section>
+    <h2>set up a GitHub Actions workflow to automatically deploy your Node.js application on an Ubuntu server using Nginx</h2>
+    <p>Install Required Software </p>
+    <code>ssh username@your-server-ip</code>
+    <p>Update the system</p>
+
+    <code>sudo apt update && sudo apt upgrade -y</code>
+    <p>Install Node.js</p>
+    <code>curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        sudo apt install -y nodejs
+    </code>  
+
+    <p>Install Nginx</p>
+    <code>sudo apt install nginx -y</code>
+    <p>Install PM2 (to manage the Node.js app)</p>
+    <code>sudo npm install -g pm2</code>
+    <p>Set Up Nginx Configuration</p>
+    <code>sudo nano /etc/nginx/sites-available/default</code>
+    <p>Replace the contents with</p>
+    <code>
+        server {
+            listen 80;
+            server_name your-domain.com;
+        
+            location / {
+                proxy_pass http://127.0.0.1:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+            }
+        }
+    </code>
+    <p>Test the Nginx configuration</p>
+    <code>sudo nginx -t</code>
+    <p>Reload Nginx</p>
+    <code>sudo systemctl reload nginx</code>
+
+    <h4>Prepare the GitHub Repository</h4>
+    <p>Ensure your repository is private</p>
+    <p>Add a .github/workflows/deploy.yml file to the repository</p>
+    <p>Generate SSH Keys on your local machine<p>
+    <code>ssh-keygen -t rsa -b 4096 -C "your-email@example.com" </code>
+    <p>Then copy public key to the server </p>
+
+    <p>
+        Add the Private Key to GitHub Secrets <br>
+        * Go to your GitHub repository.<br>
+        * Navigate to Settings > Secrets and Variables > Actions. <br>
+        * Add the following secrets:
+        * SSH_PRIVATE_KEY: Paste the private key (~/.ssh/id_rsa). <br>
+        * SERVER_IP: Your server's IP address. <br>
+        * SERVER_USER: The username you use to SSH into the server.
+
+    <p>
+        
+     <h2>Create the GitHub Actions Workflow</h2>
+     <p>Create a .github/workflows/deploy.yml file in your repository with the following content</p>
+     <code>
+        name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Application
+        run: echo "Skipping build step as no build script is required."
+
+      - name: Deploy to Server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+          scp -r ./* $SERVER_USER@$SERVER_IP:/var/www/backend
+          ssh $SERVER_USER@$SERVER_IP << 'EOF'
+          cd /var/www/backend
+          npm install --production
+          pm2 restart all || pm2 start server.js --name "backend"
+          EOF
+
+     </code>
+
+
+     <h4> Directory Structure on the Server<h4>
+        <code>
+            sudo mkdir -p /var/www/node-app <br>
+            sudo chown -R $USER:$USER /var/www/node-app
+        </code>
+        
+
+    <h2>Additional Configuration<h2>
+     <p>SSL Setup: Use Let's Encrypt to secure your app with HTTPS</p>
+     <code>
+        sudo apt install certbot python3-certbot-nginx
+        sudo certbot --nginx -d your-domain.com
+     </code>
+
+     <section>
+     <h2>NOTE: </h2>
+     <p>Add a Build Script If your project requires a build step (e.g., TypeScript, Webpack, etc.), add a build script to your package.json</p>
+     <code>
+        "scripts": {
+            "start": "node server.js",
+            "build": "tsc" // Replace with your build command
+          }          
+     </code>
+     <p>Then ensure all necessary dependencies (like typescript) are installed</p>
+     <code>npm install typescript --save-dev </code>
+    </section>
+    
+     <p>Your workflow is now complete and will automatically deploy updates to your Node.js application whenever you push changes to GitHub!</p>
+
+
+        <section>
             <h2>Final Steps</h2>
             <p>Access your applications</p>
             <ul>
